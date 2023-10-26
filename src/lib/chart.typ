@@ -6,6 +6,8 @@
 #import "../util.typ"
 #import "../styles.typ"
 
+#import "chart/dendrogram.typ": dendrogram
+
 // Styles
 #let barchart-default-style = (
   axes: (tick: (length: 0))
