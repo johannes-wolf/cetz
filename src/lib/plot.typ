@@ -8,6 +8,7 @@
 #import "plot/line.typ": add, add-hline, add-vline, add-fill-between
 #import "plot/contour.typ": add-contour
 #import "plot/boxwhisker.typ": add-boxwhisker
+#import "plot/bubble.typ": add-bubble
 
 #import "../draw.typ"
 #import "../vector.typ"
