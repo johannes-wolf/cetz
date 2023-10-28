@@ -163,6 +163,67 @@
   return calc.max(..a)
 }
 
+/// Clamp value between min and max
+///
+/// - min (float): Minimum value
+/// - v (float): Value to clamp
+/// - max (float): Maximum value
+/// -> float Clamped value
+#let clamp(min, v, max) = {
+  return calc.min(max, calc.max(v, min))
+}
+
+/// Calculate color for position t between color-stops of a linear gradient.
+///
+/// - color-stops (array): Array of colors or `(float, color)` tuples
+///                        where the float part describes the position
+///                        of the colorstop in the gradient (0, 1).
+///                        If non tuple version is used, the colors get
+///                        spaced evenly between (0, 1).
+/// - t (float): Position (0, 1) to calculate the color for
+#let linear-gradient(color-stops, t) = {
+  t = clamp(0, t, 1)
+
+  let count = color-stops.len()
+  assert(count >= 1,
+    message: "Need at least one color stop")
+  if count == 1 {
+    return if type(color-stops.first()) == array {
+      color-stops.first().at(1)
+    } else {
+      color-stops.at(0)
+    }
+  }
+
+  // Sorted and indexed color stop tuples
+  let stops = color-stops.enumerate().map(((i, v)) => {
+    if type(v) == array {
+      (clamp(0, v.at(0), 1), v.at(1))
+    } else {
+      (i / (count - 1), v)
+    }
+  }).sorted(key: v => v.at(0))
+
+  // Guess an index by interpolation
+  let i = calc.max(0, calc.min(int(count * t) - 1, count - 1))
+  while true {
+    let (low, high) = (stops.at(i), stops.at(calc.min(i + 1, count - 1)))
+    if low.at(0) == high.at(0) {
+      return low.at(1)
+    } else if low.at(0) <= t and high.at(0) >= t {
+      let j = ((t - low.at(0)) / (high.at(0) - low.at(0))) * 100%
+      return color.mix((low.at(1), 100% - j), (high.at(1), 0% + j))
+    } else if low.at(0) > t {
+      if i == 0 { return low.at(1) }
+      i -= 1
+    } else if high.at(0) < t {
+      if i == count - 1 { return high.at(1) }
+      i += 1
+    }
+  }
+  return stops.last().at(1)
+}
+
 /// Merge dictionary a and b and return the result
 /// Prefers values of b.
 ///

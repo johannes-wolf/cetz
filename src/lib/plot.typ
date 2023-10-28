@@ -1,17 +1,14 @@
 // CeTZ Library for drawing plots
-#import "axes.typ"
-#import "palette.typ"
-#import "../util.typ"
-#import "../draw.typ"
+#import "/src/util.typ"
+#import "/src/draw.typ"
+#import "/src/lib/axes.typ"
+#import "/src/lib/palette.typ"
 
 #import "plot/sample.typ": sample-fn, sample-fn2
 #import "plot/line.typ": add, add-hline, add-vline, add-fill-between
 #import "plot/contour.typ": add-contour
 #import "plot/boxwhisker.typ": add-boxwhisker
-
-#import "../draw.typ"
-#import "../vector.typ"
-#import "../bezier.typ"
+#import "plot/heatmap.typ": add-heatmap
 
 #let default-colors = (blue, red, green, yellow, black)
 
