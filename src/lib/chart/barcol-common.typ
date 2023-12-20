@@ -13,7 +13,7 @@
       ..value-key.map(k => t.at(k)))))
   },
   stacked: (data, value-key) => {
-    calc.max(0, ..data.map(t => 
+    calc.max(0, ..data.map(t =>
       value-key.map(k => t.at(k)).sum()))
   },
   stacked100: (..) => {

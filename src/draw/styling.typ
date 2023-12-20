@@ -9,10 +9,10 @@
     0,
     message: "set-style takes no positional arguments",
   )
-  
+
   (ctx => {
     ctx.style = util.merge-dictionary(ctx.style, style.named())
-    
+
     return (ctx: ctx)
   },)
 }

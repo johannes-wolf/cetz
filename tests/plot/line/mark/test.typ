@@ -4,7 +4,7 @@
 /* Draw different marks */
 #box(stroke: 2pt + red, canvas({
   import draw: *
-  
+
   plot.plot(size: (5, 4),
     axis-style: "scientific",
     y-max: 2,

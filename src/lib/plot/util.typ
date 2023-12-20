@@ -133,7 +133,7 @@
         path = ()
       }
     }
-    
+
     prev = pt
     was-inside = is-inside
   }
@@ -180,7 +180,7 @@
 #let sampled-spline-data(points, tension, samples) = {
   assert(samples >= 1 and samples <= 100,
     message: "Must at least use 1 sample per curve")
-  
+
   let curves = bezier.catmull-to-cubic(points, tension)
   let pts = ()
   for c in curves {

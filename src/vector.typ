@@ -123,7 +123,7 @@
   return calc.atan2(b.at(0) - a.at(0), b.at(1) - a.at(1))
 }
 
-/// Calculate angle between three points 
+/// Calculate angle between three points
 #let angle(v1, c, v2) = {
   assert(dim(v1) == dim(v2), message: "Vectors " + repr(v1) + " and " + repr(v2) + " do not have the same dimensions.")
   if dim(v1) == 2 or dim(v1) == 3 {

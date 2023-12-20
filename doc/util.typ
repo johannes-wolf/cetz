@@ -25,7 +25,7 @@
     margin: (
       left: left-fringe * 22cm,
       top: 12% * 29cm
-    ), 
+    ),
     header: none,
     footer: none
   )
@@ -51,7 +51,7 @@
   block(
     v(2cm) +
     text(
-      20pt, 
+      20pt,
       link(
         url,
         [Version ] + [#cetz.version]

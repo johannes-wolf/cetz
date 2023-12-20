@@ -16,6 +16,6 @@
     circle("i." + anchor)
   })
 
-  fill(red); 
+  fill(red);
   circle(("i.north-west", 0.75, "i.north-east"))
 }))

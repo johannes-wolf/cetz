@@ -195,7 +195,7 @@
       if matrix.at(i).at(j) != 0 {
         (matrix.at(j), matrix.at(i)) = (matrix.at(i), matrix.at(j))
         (inverted.at(j), inverted.at(i)) = (inverted.at(i), inverted.at(j))
-        
+
         p = 1 / matrix.at(j).at(j)
         for k in N {
           matrix.at(j).at(k) *= p

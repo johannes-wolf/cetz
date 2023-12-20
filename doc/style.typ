@@ -23,7 +23,7 @@
     let label = fields.remove("label", default: none)
     heading(level: style-args.first-heading-level + 1 + fields.remove("level"), fields.remove("body"), ..fields); [#label]
   } else { e })
-  
+
   if parameter-index != none {
     description.slice(0, parameter-index).join()
   } else {
@@ -42,9 +42,9 @@
     let description = info.at("description", default: "")
     if description == [] and style-args.omit-empty-param-descriptions { continue }
     (style-args.style.show-parameter-block)(
-      name, types, description, 
+      name, types, description,
       style-args,
-      show-default: "default" in info, 
+      show-default: "default" in info,
       default: info.at("default", default: none),
     )
   }

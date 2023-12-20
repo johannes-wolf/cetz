@@ -32,15 +32,15 @@
 /// *Root:* `circle`
 /// == Keys
 ///   #show-parameter-block("radius", ("number", "array"), [A number that defines the size of the circle's radius. Can also be set to a tuple of two numbers to define the radii of an ellipse, the first number is the `x` radius and the second is the `y` radius.], default: 1)
-/// 
+///
 /// = Anchors
 ///   Supports compass anchors. The "center" anchor is the default.
-/// 
+///
 /// - position (coordinate): The position to place the circle on.
 /// - name (none,string):
 /// - anchor (none,string):
 /// - ..style (style):
-#let circle(position, name: none, anchor: none, ..style) = {  
+#let circle(position, name: none, anchor: none, ..style) = {
   // No extra positional arguments from the style sink
   assert.eq(
     style.pos(),
@@ -48,7 +48,7 @@
     message: "Unexpected positional arguments: " + repr(style.pos()),
   )
   let style = style.named()
-  
+
   (ctx => {
     let (ctx, pos) = coordinate.resolve(ctx, position)
     let style = styles.resolve(ctx.style, merge: style, root: "circle")
@@ -197,9 +197,9 @@
   },)
 }
 
-/// Draws a circular segment. 
+/// Draws a circular segment.
 ///
-/// #example(``` 
+/// #example(```
 /// arc((0,0), start: 45deg, stop: 135deg)
 /// arc((0,-0.5), start: 45deg, delta: 90deg, mode: "CLOSE")
 /// arc((0,-1), stop: 135deg, delta: 90deg, mode: "PIE")
@@ -248,7 +248,7 @@
     (start, stop, delta).filter(it => { it == auto }).len() == 1,
     message: "Exactly two of three options start, stop and delta should be defined.",
   )
-  
+
   // No extra positional arguments from the style sink
   assert.eq(
     style.pos(),
@@ -256,10 +256,10 @@
     message: "Unexpected positional arguments: " + repr(style.pos()),
   )
   let style = style.named()
-  
+
   // Coordinate check
   let t = coordinate.resolve-system(position)
-  
+
   let start-angle = if start == auto { stop - delta } else { start }
   let stop-angle = if stop == auto { start + delta } else { stop }
   // Border angles can break if the angle is 0.
@@ -322,7 +322,7 @@
     let center = if style.mode != "CLOSE" {
       // A circular sector's center anchor is placed half way between the sector-center and arc-center when the angle is 180deg. At 60deg it is placed 1/3 of the way between, this is mirrored at 300deg.
       vector.lerp(
-        arc-center, 
+        arc-center,
         sector-center,
         if (stop-angle + start-angle) > 180deg { (stop-angle + start-angle) } else { (stop-angle + start-angle) + 180deg } / 720deg
       )
@@ -337,8 +337,8 @@
 
     // compass anchors are placed on the shapes border in tikz so prototype version is setup for use here
     let border = anchor_.border.with(
-      center, 
-      2*rx, 2*ry, 
+      center,
+      2*rx, 2*ry,
       path + if style.mode == "OPEN" {
         (
           drawable.path((
@@ -520,7 +520,7 @@
 ///   #show-parameter-block("sep", "number", [The distance between multiple marks along their path.], default: 1)
 ///   #show-parameter-block("flex", "boolean", [Only applicable when marks are used on curves such as bezier and hobby. If true, the mark will point along the secant of the curve. If false, the tangent at the marks tip is used.], default: true)
 ///   #show-parameter-block("position-samples", "integer", [Only applicable when marks are used on curves such as bezier and hobby. The maximum number of samples to use for calculating curve positions. A higher number gives better results but may slow down compilation.], default: 30)
-/// 
+///
 /// *Note*: The size of the mark depends on its style values, not
 /// the distance between `from` and `to`, which only determine its
 /// orientation.
@@ -534,14 +534,14 @@
     (),
     message: "Unexpected positional arguments: " + repr(style.pos()),
   )
-  
+
   let style = style.named()
   (from, to).map(coordinate.resolve-system)
-  
+
   return (ctx => {
     let (ctx, ..pts) = coordinate.resolve(ctx, from, to)
     let style = styles.resolve(ctx.style, merge: style, root: "mark")
-    
+
     return (ctx: ctx, drawables: drawable.mark(
       ..pts,
       style.symbol,
@@ -551,7 +551,7 @@
 }
 
 /// Draws a line, more than two points can be given to create a line-strip.
-/// 
+///
 /// #example(```
 /// line((-1.5, 0), (1.5, 0))
 /// line((0, -1.5), (0, 1.5))
@@ -571,12 +571,12 @@
 ///
 /// = parameters
 ///
-/// = Styling 
+/// = Styling
 /// *Root:* `line`
 ///
 /// == Keys
 ///   Supports mark styling.
-/// 
+///
 /// = Anchors
 ///   / start: The line's start position
 ///   / end: The line's end position
@@ -588,9 +588,9 @@
   // Extra positional arguments from the pts-style sink are interpreted as coordinates.
   let pts = pts-style.pos()
   let style = pts-style.named()
-  
+
   assert(pts.len() >= 2, message: "Line must have a minimum of two points")
-  
+
   // Coordinate check
   let pts-system = pts.map(coordinate.resolve-system)
 
@@ -615,7 +615,7 @@
       return util.revert-transform(ctx.transform, pt)
     }
   }
-  
+
   return (ctx => {
     let first-elem = pts.first()
     let last-elem = pts.last()
@@ -681,7 +681,7 @@
 /// #example(```
 /// // Draw a grid
 /// grid((0,0), (2,2))
-/// 
+///
 /// // Draw a smaller blue grid
 /// grid((1,1), (2,2), stroke: blue, step: .25)
 /// ```)
@@ -806,7 +806,7 @@
 /// #example(```
 /// content((0,0), [Hello World!])
 /// ```)
-/// To put text on a line you can let the function calculate the angle between its position and a second coordinate by passing it to `angle`: 
+/// To put text on a line you can let the function calculate the angle between its position and a second coordinate by passing it to `angle`:
 ///
 /// #example(```
 /// line((0, 0), (3, 1), name: "line")
@@ -814,7 +814,7 @@
 ///   ("line.start", 0.5, "line.end"),
 ///   angle: "line.end",
 ///   padding: .1,
-///   anchor: "south", 
+///   anchor: "south",
 ///   [Text on a line]
 /// )
 /// ```)
@@ -831,10 +831,10 @@
 /// == Keys
 ///   #show-parameter-block("padding", ("number", "dictionary"), default: 0, [Sets the spacing around content. Can be a single number to set padding on all sides or a dictionary to specify each side specifically. The dictionary follows Typst's `pad` function: https://typst.app/docs/reference/layout/pad/])
 ///   #show-parameter-block("frame", ("string", "none"), default: none, [Sets the frame style. Can be `none`, "rect" or "circle" and inherits the `stroke` and `fill` style.])
-///   
+///
 /// = Anchors
 ///   Supports compass anchors.
-///   
+///
 /// - ..args-style (coordinate, content, style): When one coordinate is given as a positional argument, the content will be placed at that position. When two coordinates are given as positional arguments, the content will be placed inside a rectangle between the two positions. All named arguments are styling and any additional positional arguments will panic.
 /// - angle (angle,coordinate): Rotates the content by the given angle. A coordinate can be given to rotate the content by the angle between it and the first coordinate given in `args`. This effectively points the right hand side of the content towards the coordinate. This currently exists because Typst's rotate function does not change the width and height of content.
 /// - anchor (none, string):
@@ -842,13 +842,13 @@
 #let content(
     ..args-style,
     angle: 0deg,
-    anchor: none, 
-    name: none, 
+    anchor: none,
+    name: none,
   ) = {
   let (args, style) = (args-style.pos(), args-style.named())
 
   let (a, b, body) = if args.len() == 2 {
-    args.insert(1, auto) 
+    args.insert(1, auto)
     args
   } else if args.len() == 3 {
     args
@@ -1013,7 +1013,7 @@
 }
 
 /// Draws a rectangle between two coordinates.
-/// #example(``` 
+/// #example(```
 /// rect((0,0), (1,1))
 /// rect((-.5, -.5), (rel: (2, 2)),
 ///   radius: (north-east: (100%, .5),
@@ -1066,7 +1066,7 @@
     message: "Unexpected positional arguments: " + repr(style.pos()),
   )
   let style = style.named()
-  
+
   return (
     ctx => {
       let ctx = ctx
@@ -1221,19 +1221,19 @@
 /// let (a, b, c) = ((0, 0), (2, 0), (1, 1))
 /// line(a, c,  b, stroke: gray)
 /// bezier(a, b, c)
-/// 
+///
 /// let (a, b, c, d) = ((0, -1), (2, -1), (.5, -2), (1.5, 0))
 /// line(a, c, d, b, stroke: gray)
 /// bezier(a, b, c, d)
 /// ```)
 ///
 /// = parameters
-/// 
-/// = Styling 
+///
+/// = Styling
 /// *Root* `bezier`
 /// == Keys
 ///   Supports marks.
-///   
+///
 /// = Anchors
 ///   / ctrl-n: nth control point where n is an integer starting at 0
 ///   / start: The start position of the curve.
@@ -1246,7 +1246,7 @@
 #let bezier(start, end, ..ctrl-style, name: none) = {
   // Extra positional arguments are treated like control points.
   let (ctrl, style) = (ctrl-style.pos(), ctrl-style.named())
-  
+
   // Control point check
   let len = ctrl.len()
   assert(
@@ -1254,7 +1254,7 @@
     message: "Bezier curve expects 1 or 2 control points. Got " + str(len),
   )
   let coordinates = (start, ..ctrl, end)
-  
+
   // Coordinates check
   let t = coordinates.map(coordinate.resolve-system)
 
@@ -1301,7 +1301,7 @@
       }
 
       return (
-        ctx: ctx, 
+        ctx: ctx,
         name: name,
         anchors: anchors,
         drawables: drawable.apply-transform(
@@ -1351,7 +1351,7 @@
 ///
 /// = parameters
 ///
-/// = Styling 
+/// = Styling
 /// *Root* `catmull`\
 /// == Keys
 ///   #show-parameter-block("tension", "float", [I need a description], default: 0.5)
@@ -1436,7 +1436,7 @@
 /// ```)
 ///
 /// = parameters
-/// 
+///
 /// = Styling
 /// *Root* `hobby`
 /// == Keys
@@ -1549,7 +1549,7 @@
     message: "Unexpected positional arguments: " + repr(style.pos()),
   )
   let style = style.named()
-  
+
   return (
     ctx => {
       let ctx = ctx

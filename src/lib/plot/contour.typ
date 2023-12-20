@@ -97,7 +97,7 @@
       let br = get-bin(x+1, y+1)
 
       // Corner data
-      // 
+      //
       // nw-----ne
       // |       |
       // |       |

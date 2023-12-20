@@ -7,7 +7,7 @@
   // (x: <number> or <none>, y: <number> or <none>, z: <number> or <none>)
   // (x, y)
   // (x, y, z)
-  
+
   return if type(c) == array {
     vector.as-vec(c)
   } else {
@@ -110,7 +110,7 @@
       (ctx, ctx.prev.pt)
     }
   c = vector.add(
-    rel, 
+    rel,
     to,
   )
   c.insert(0, update)

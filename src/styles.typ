@@ -8,7 +8,7 @@
   ///   - "LINEAR" Moving the affected point and it's next control point (like TikZ "quick" key)
   ///   - "CURVED" Preserving the bezier curve by calculating new control points
   shorten: "LINEAR",
-  
+
   // Allowed values:
   //   - none
   //   - Number
@@ -110,9 +110,9 @@
   ),
 )
 
-/// You can use this to combine the style in `ctx`, the style given by a user for a single element and an element's default style. 
+/// You can use this to combine the style in `ctx`, the style given by a user for a single element and an element's default style.
 ///
-/// `base` is first merged onto `dict` without overwriting existing values, and if `root` is given it is merged onto that key of `dict`. `merge` is then merged onto `dict` but does overwrite existing entries, if `root` is given it is merged onto that key of `dict`. Then entries in `dict` that are `<auto>` inherit values from their nearest ancestor and entries of type `<dictionary>` are merged with their closest ancestor. 
+/// `base` is first merged onto `dict` without overwriting existing values, and if `root` is given it is merged onto that key of `dict`. `merge` is then merged onto `dict` but does overwrite existing entries, if `root` is given it is merged onto that key of `dict`. Then entries in `dict` that are `<auto>` inherit values from their nearest ancestor and entries of type `<dictionary>` are merged with their closest ancestor.
 /// ```typ
 /// #let dict = (
 ///   stroke: "black",
@@ -135,7 +135,7 @@
 /// Each level of `dict` is then processed with these steps. If `root` is given the level with that key will be the first, otherwise the whole of `dict` is processed.
 /// + Values on the corresponding level of `merge` are inserted into the level if the key does not exist on the level or if they are not both dictionaries. If they are both dictionaries their values will be inserted in the same stage at a lower level.
 /// + If an entry is `auto` or a dictionary, the tree is travelled back up until an entry with the same key is found. If the current entry is `auto` the value of the ancestor's entry is copied. Or if the current entry and ancestor entry is a dictionary, they are merged with the current entry overwriting any values in it's ancestors.
-/// + Each entry that is a dictionary is then resolved from step 1. 
+/// + Each entry that is a dictionary is then resolved from step 1.
 ///
 /// #example(```
 /// get-ctx(ctx => {

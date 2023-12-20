@@ -59,14 +59,14 @@ Note that draw functions are imported inside the scope of the `canvas` block. Th
 #show raw.where(block: false): it => if it.text.starts-with("<") and it.text.ends-with(">") {
     set text(1.2em)
     doc-style.show-type(it.text.slice(1, -1))
-  } else { 
-    it 
+  } else {
+    it
   }
 
 == CeTZ Unique Argument Types
 Many CeTZ functions expect data in certain formats which we will call types. Note that these are actually made up of Typst primitives.
   / `<coordinate>`: Any coordinate system. See coordinate-systems.
-  / `<number>`: Any of `<float>`, `<integer>` or `<length>`. 
+  / `<number>`: Any of `<float>`, `<integer>` or `<length>`.
   / `<style>`: Named arguments (or a dictionary if used for a single argument) of style key-values
 
 == Anchors <anchors>
@@ -84,7 +84,7 @@ circle("circle.east", radius: 0.3)
 Elements can be placed relative to their own anchors if they have an
 argument called `anchor`:
 ```example
-// An element does not have to be named 
+// An element does not have to be named
 // in order to use its own anchors.
 circle((0,0), anchor: "west")
 
@@ -270,10 +270,10 @@ Defines a point a `radius` distance away from the origin at the given `angle`.
 line((0,0), (angle: 30deg, radius: 1cm))
 ```
 
-The implicit form is an array of the angle then the radius `(angle, radius)` or `(angle, (x, y))`. 
+The implicit form is an array of the angle then the radius `(angle, radius)` or `(angle, (x, y))`.
 
 ```example
-line((0,0), (30deg, 1), (60deg, 1), 
+line((0,0), (30deg, 1), (60deg, 1),
      (90deg, 1), (120deg, 1), (150deg, 1), (180deg, 1))
 ```
 
@@ -336,7 +336,7 @@ This system allows you to compute the point that lies tangent to a shape. In det
 #def-arg("point", `<coordinate>`, [The point through which the tangent should go.])
 #def-arg("solution", `<integer>`, [Which solution should be used if there are more than one.])
 
-A special algorithm is needed in order to compute the tangent for a given shape. Currently it does this by assuming the distance between the center and top anchor (See @anchors) is the radius of a circle. 
+A special algorithm is needed in order to compute the tangent for a given shape. Currently it does this by assuming the distance between the center and top anchor (See @anchors) is the radius of a circle.
 
 ```example
 grid((0,0), (3,2), help-lines: true)
@@ -376,7 +376,7 @@ line("p2.south-east", ((), "-|", "yline.end")) // Short form
 ```
 
 == Interpolation <coordinate-lerp>
-Use this to linearly interpolate between two coordinates `a` and `b` with a given factor `number`. If `number` is a `<length>` the position will be at the given distance away from `a` towards `b`. 
+Use this to linearly interpolate between two coordinates `a` and `b` with a given factor `number`. If `number` is a `<length>` the position will be at the given distance away from `a` towards `b`.
 An angle can also be given for the general meaning: "First consider the line from `a` to `b`. Then rotate this line by `angle` around point `a`. Then the two endpoints of this line will be `a` and some point `c`. Use this point `c` for the subsequent computation."
 
 #def-arg("a", `<coordinate>`, [The coordinate to interpolate from.])

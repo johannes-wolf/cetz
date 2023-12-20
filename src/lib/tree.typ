@@ -77,7 +77,7 @@
 /// - spread (float): Sibling spread factor
 /// - name (none,string): The tree elements name
 #let tree(
-  root, 
+  root,
   draw-node: auto,
   draw-edge: auto,
   direction: "down",
@@ -101,7 +101,7 @@
   ).at(direction)
 
   let opposite-dir = (
-    west: "east", 
+    west: "east",
     east: "west",
     south: "north",
     north: "south"
@@ -110,7 +110,7 @@
   if draw-edge == auto {
     draw-edge = (source-name, target-name, target-node) => {
       let (a, b) = (
-        source-name + "." + direction, 
+        source-name + "." + direction,
         target-name + "." + opposite-dir.at(direction)
       )
 
@@ -153,7 +153,7 @@
     } else {
       content = tree
     }
-    
+
     return (
       x: 0,
       y: depth * grow,

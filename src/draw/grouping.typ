@@ -116,7 +116,7 @@
     let paths = (named-drawables + drawables).filter(d => d.type == "path")
 
     let pts = ()
-    if paths.len() > 1 { 
+    if paths.len() > 1 {
       for (i, path-1) in paths.enumerate() {
         for path-2 in paths.slice(i+1) {
           for pt in intersection.path-path(
@@ -337,13 +337,13 @@
 #let place-anchors(path, name, ..anchors) = {
   assert(type(name) == str,
     message: "Name must be of type string, got: " + type(name))
-  
+
   return (ctx => {
     let (ctx, drawables) = process.many(ctx, path)
-    
+
     assert(drawables.first().type == "path")
     let s = drawables.first().segments
-    
+
     let out = (:)
     for a in anchors.pos() {
       assert(type(a) in (dictionary, array),
@@ -375,7 +375,7 @@
   },)
 }
 
-/// An advanced element that allows you to modify the current canvas context. 
+/// An advanced element that allows you to modify the current canvas context.
 ///
 /// A context object holds the canvas' state, such as the element dictionary,
 /// the current transformation matrix, group and canvas unit length. The following

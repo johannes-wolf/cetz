@@ -31,7 +31,7 @@
 ///                 *Example*
 ///                 ```typc
 ///                 (([A], 1), ([B], 2), ([C], 3),)
-///                 ``` 
+///                 ```
 /// - label-key (int,string): Key to access the label of a data row.
 ///                           This key is used as argument to the
 ///                           rows `.at(..)` function.

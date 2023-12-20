@@ -405,7 +405,7 @@
                 line(grid-begin, grid-end, ..style.grid)
               }
             }
-            
+
             if length != none and length != 0 {
               line(tick-start, tick-end, ..style.tick)
             }
@@ -458,7 +458,7 @@
             angle: angle,
             padding: style.label.offset
           ),
-          anchor: anchor, 
+          anchor: anchor,
         )
       }
     }
@@ -499,7 +499,7 @@
       right: style.padding,
       top: style.padding,
       bottom: if x-position > y-axis.min {style.padding} else {style.tick.length}
-    ) 
+    )
 
     let (w, h) = size
 

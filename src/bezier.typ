@@ -386,7 +386,7 @@
     if discriminant == 0 {
       return (-f1 / (2*f2),)
     }
-    
+
     return ((-f1 - calc.sqrt(discriminant)) / (2*f2),
             (-f1 + calc.sqrt(discriminant)) / (2*f2))
   }
