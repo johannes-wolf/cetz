@@ -183,6 +183,7 @@
 ///   #show-parameter-block("mode", ("string",), [The options are: "OPEN" no additional lines are drawn so just the arc is shown; "CLOSE" a line is drawn from the start to the end of the arc creating a circular segment; "PIE" lines are drawn from the start and end of the arc to the origin creating a circular sector.], default: "OPEN")
 ///   #show-parameter-block("update-position", ("bool",), [Update the current canvas position to the arc's end point (anchor `"arc-end"`).
 ///     This overrides the default of `true`, that allows chaining of (arc) elements.], default: true)
+///   #show-parameter-block("rotation", ("angle",), [The angle to rotate the ellipse by before calculating the arc.], default: 0deg)
 ///
 /// = Anchors
 ///   Supports compass, distance anchors, plus angle anchors if mode is "PIE"
@@ -225,15 +226,16 @@
   
   // Coordinate check
   let t = coordinate.resolve-system(position)
-  
-  let start-angle = if start == auto { stop - delta } else { start }
-  let stop-angle = if stop == auto { start + delta } else { stop }
-  // Border angles can break if the angle is 0.
-  assert.ne(start-angle, stop-angle, message: "Angle must be greater than 0deg")
 
   return (ctx => {
     let style = styles.resolve(ctx.style, merge: style, root: "arc")
     assert(style.mode in ("OPEN", "PIE", "CLOSE"))
+    assert(type(style.rotation) == angle, message: "rotation must be an abgle, got " + repr(style.rotation))
+
+    let start-angle = if start == auto { stop - delta } else { start } + style.rotation
+    let stop-angle = if stop == auto { start + delta } else { stop } + style.rotation
+    // Border angles can break if the angle is 0.
+    assert.ne(start-angle, stop-angle, message: "Angle must be greater than 0deg")
 
     let (ctx, arc-start) = coordinate.resolve(ctx, position)
     let (rx, ry) = util.resolve-radius(style.radius).map(util.resolve-number.with(ctx))
@@ -337,7 +339,22 @@
       default: "arc-start",
       name: name,
       offset-anchor: anchor,
-      transform: ctx.transform,
+      // rotate around arc-start by -style.rotation
+      transform: matrix.translate(
+        matrix.mul-mat(
+          matrix.translate(ctx.transform, (
+            +arc-start.at(0),
+            -arc-start.at(1),
+            +arc-start.at(2),
+          )),
+          matrix.transform-rotate-z(-style.rotation)
+        ),
+        (
+          -arc-start.at(0),
+          +arc-start.at(1),
+          -arc-start.at(2),
+        ),
+      ),
     )
 
     if mark_.check-mark(style.mark) {
@@ -440,6 +457,65 @@
 
   return arc(a, start: start, delta: delta, radius: radius,
     anchor: "arc-start", name: name, ..style)
+})
+
+#let arc-2pt(start, end, radius, sweep: false, large-arc: false, rotation: 0deg, ..style) = get-ctx(ctx => {
+  let (ctx, start, end) = coordinate.resolve(ctx, ..(start, end))
+  assert(start.at(2) == end.at(2),
+    message: "The z coordinate of both points must be equal, but is: " + repr((start, end).map(v => v.at(2))))
+
+  // algorithm based on https://www.w3.org/TR/SVG/implnote.html#ArcConversionEndpointToCenter
+  let (rx, ry) = util.resolve-radius(radius)
+  let start- = util.apply-transform(
+    matrix.transform-rotate-z(rotation),
+    vector.div(vector.sub(end, start), 2),
+  )
+
+  let rx-sq = calc.pow(rx, 2)
+  let ry-sq = calc.pow(ry, 2)
+  let x1-sq = calc.pow(start-.at(0), 2)
+  let y1-sq = calc.pow(start-.at(1), 2)
+  let center- = vector.scale(
+    (
+      +rx * start-.at(1) / ry,
+      -ry * start-.at(0) / rx,
+    ),
+    calc.sqrt(
+      (rx-sq * ry-sq - rx-sq * y1-sq - ry-sq * x1-sq)
+      / (rx-sq * y1-sq + ry-sq * x1-sq)
+    ) * if sweep == large-arc { -1 } else { 1 },
+  )
+
+  let angle-fn(u, v) = {
+    let (ux, uy) = u
+    let (vx, vy) = v
+    let sign = ux * vy - uy * vx
+    sign = if sign < 0 { -1 } else { 1 }
+    return sign * calc.acos(vector.dot(u, v) / (vector.len(u) * vector.len(v)))
+  }
+
+  let start-angle = angle-fn((1, 0), (
+    (-start-.at(0) - center-.at(0)) / rx,
+    (-start-.at(1) - center-.at(1)) / ry,
+  ))
+  let delta = calc.rem(angle-fn(
+    (
+      (-start-.at(0) - center-.at(0)) / rx,
+      (-start-.at(1) - center-.at(1)) / ry,
+    ),
+    (
+      (start-.at(0) - center-.at(0)) / rx,
+      (start-.at(1) - center-.at(1)) / ry,
+    ),
+  ).deg(), 360) * 1deg
+  if sweep and delta > 0deg {
+    delta -= 360deg
+  } else if not sweep and delta < 0deg {
+    delta += 360deg
+  }
+
+  return arc(start, start: start-angle - rotation, delta: delta, radius: radius,
+    anchor: "arc-start", rotation: rotation, ..style)
 })
 
 /// Draws a single mark pointing at a target coordinate
