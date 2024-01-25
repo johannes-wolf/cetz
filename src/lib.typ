@@ -12,6 +12,7 @@
 #import "process.typ"
 #import "util.typ"
 #import "path-util.typ"
+#import "intersection.typ"
 #import "mark.typ"
 #import "mark-shapes.typ"
 
