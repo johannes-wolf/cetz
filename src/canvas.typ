@@ -15,14 +15,10 @@
 /// - background (none,color): A color to be used for the background of the canvas.
 /// - debug (bool): Shows the bounding boxes of each element when `true`.
 /// -> content
-#let canvas(length: 1cm, debug: false, background: none, body) = layout(ly => style(st => {
-  if body == none {
-    return []
-  }
-  assert(
-    type(body) == array,
-    message: "Incorrect type for body: " + repr(type(body)),
-  )
+#let canvas(length: 1cm, debug: false, background: none, body) = layout(ly => locate(loc => style(st => {
+  let body = if body != none { body } else { () }
+  assert(type(body) == array,
+    message: "Incorrect type for body: " + repr(type(body)))
 
   assert(type(length) in (typst-length, ratio), message: "Expected `length` to be of type length or ratio, got " + repr(length))
   let length = if type(length) == ratio {
@@ -35,6 +31,7 @@
 
   let ctx = (
     typst-style: st,
+    typst-location: loc,
     length: length,
     debug: debug,
     // Previous element position & bbox
@@ -130,4 +127,4 @@
       }, dx: x * length, dy: y * length)
     }
   }))
-}))
+})))
