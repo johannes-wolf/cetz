@@ -1,4 +1,6 @@
 # 0.2.1
+- The default coordinate system changed to a right-hand side system.
+  Use `scale(z: -1)` if you want to change back to a left-hand system.
 
 ## Anchors
 - Changing a group's "center" anchor now effects how border anchors are calculated.

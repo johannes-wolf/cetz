@@ -43,9 +43,8 @@
     style: styles.default,
     // Current transform
     transform: matrix.mul-mat(
-      matrix.transform-shear-z(.5),
-      matrix.transform-scale((x: 1, y: -1, z: 1)),
-    ),
+      matrix.transform-shear-z(-.5),
+      matrix.transform-scale((y: -1))),
     // Nodes, stores anchors and paths
     nodes: (:),
     // group stack
