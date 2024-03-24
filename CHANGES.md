@@ -2,6 +2,9 @@
 
 CeTZ 0.3.0 requires Typst 0.11.0
 
+## Clipping
+- CeTZ now supports boolean operations on paths.
+
 # 0.2.2
 
 ## Anchors

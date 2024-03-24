@@ -7,7 +7,7 @@
 /// - b (vector): Line 1 point 2
 /// - c (vector): Line 2 point 1
 /// - d (vector): Line 2 point 2
-/// - ray (bool): treat both lines as infinite
+/// - ray (bool): Treat both lines as infinite
 /// -> (vector,none)
 #let line-line(a, b, c, d, ray: false) = {
   let lli8(x1, y1, x2, y2, x3, y3, x4, y4) = {
@@ -38,16 +38,16 @@
 }
 
 // Check for line-cubic bezier intersection
-#let line-cubic(la, lb, s, e, c1, c2) = {
+#let line-cubic(la, lb, s, e, c1, c2, ray: false) = {
   import "/src/bezier.typ": line-cubic-intersections as line-cubic
-  return line-cubic(la, lb, s, e, c1, c2)
+  return line-cubic(la, lb, s, e, c1, c2, ray: ray)
 }
 
 // Check for line-linestrip intersection
-#let line-linestrip(la, lb, v) = {
+#let line-linestrip(la, lb, v, ray: false) = {
   let pts = ()
   for i in range(0, v.len() - 1) {
-    let pt = line-line(la, lb, v.at(i), v.at(i + 1))
+    let pt = line-line(la, lb, v.at(i), v.at(i + 1), ray: ray)
     if pt != none {
       pts.push(pt)
     }
@@ -60,13 +60,13 @@
 /// - la (vector): Line start
 /// - lb (vector): Line end
 /// - path (path): Path
-#let line-path(la, lb, path) = {
+#let line-path(la, lb, path, ray: false) = {
   let segment(s) = {
     let (k, ..v) = s
     if k == "line" {
-      return line-linestrip(la, lb, v)
+      return line-linestrip(la, lb, v, ray: ray)
     } else if k == "cubic" {
-      return line-cubic(la, lb, ..v)
+      return line-cubic(la, lb, ..v, ray: ray)
     } else {
       return ()
     }

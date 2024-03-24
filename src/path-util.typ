@@ -415,3 +415,30 @@
   }
   return segments
 }
+
+
+/// Expand line-strips into single line segments
+/// this can make algorithms processing the path easier.
+///
+/// - p (path): Input path
+/// -> array Expanded path segments list
+#let expand-segments(p, linearize: false, samples: 8) = {
+  let new = ()
+  for s in p.segments {
+    let (kind, ..pts) = s
+    if kind == "line" and pts.len() > 2 {
+      for i in range(1, pts.len()) {
+        new.push(("line", pts.at(i - 1), pts.at(i)))
+      }
+    } else if linearize and kind == "cubic" {
+      let pts = range(samples + 1).map(
+        t => cubic-point(..s.slice(1), t / samples))
+      for i in range(1, pts.len()) {
+        new.push(("line", pts.at(i - 1), pts.at(i)))
+      }
+    } else {
+      new.push(s)
+    }
+  }
+  return new
+}

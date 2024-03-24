@@ -290,6 +290,10 @@ line(..c)
 #doc-style.parse-show-module("/src/draw/grouping.typ")
 
 #pagebreak()
+== Clipping
+#doc-style.parse-show-module("/src/draw/clipping.typ")
+
+#pagebreak()
 == Transformations
 All transformation functions push a transformation matrix onto the current transform stack. To apply transformations scoped use a `group(...)` object.
 
