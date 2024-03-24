@@ -5,8 +5,10 @@
 
 #let barchart-default-style = (
   axes: (tick: (length: 0), grid: (stroke: (dash: "dotted"))),
-  bar-width: .8,
+  bar-width: .7,
   y-inset: 1,
+  data-label: (offset: 0.20, text-size: 8pt),
+  bars-padding: 0.04
 )
 
 /// Draw a bar chart. A bar chart is a chart that represents data with

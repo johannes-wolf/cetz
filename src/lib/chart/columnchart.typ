@@ -5,8 +5,10 @@
 
 #let columnchart-default-style = (
   axes: (tick: (length: 0), grid: (stroke: (dash: "dotted"))),
-  bar-width: .8,
-  x-inset: 1,
+  bar-width: .9,
+  x-inset: 0.6,
+  data-label: (offset: 0.20, text-size: 8pt),
+  bars-padding: 0.02
 )
 
 /// Draw a column chart. A column chart is a chart that represents data with

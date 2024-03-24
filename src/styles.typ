@@ -15,6 +15,7 @@
   //   - Array: (y, x), (top, y, bottom), (top, right, bottom, left)
   //   - Dictionary: (top:, right:, bottom:, left:)
   padding: none,
+  data-label: none,
   mark: (
     scale: 1,         // A factor that is applied to length, width, and inset.
     length: .2cm,     // The size of the mark along its direction
